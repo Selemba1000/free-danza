@@ -1,13 +1,11 @@
 package me.selemba.common.audio
 
-import com.tagtraum.ffsampledsp.*
 import kotlinx.coroutines.*
 import java.io.*
-import java.util.concurrent.*
 import javax.sound.sampled.*
 
 
-actual class NativePlayer actual constructor(private val coroutineScope: CoroutineScope) {
+actual class Player actual constructor(actual val coroutineScope: CoroutineScope) {
 
     var mixer = AudioSystem.getMixer(AudioSystem.getMixerInfo().first())
 
@@ -17,7 +15,7 @@ actual class NativePlayer actual constructor(private val coroutineScope: Corouti
 
     var job : Job? = null
 
-    actual suspend fun start(): Boolean {
+    actual suspend fun start() {
         job=coroutineScope.launch {
             if (stream!=null){
                 val pcmFormat = AudioFormat(
@@ -36,30 +34,28 @@ actual class NativePlayer actual constructor(private val coroutineScope: Corouti
                 clip.start()
             }
         }
-        return true
     }
 
-    actual suspend fun stop(): Future<Boolean> {
+    actual suspend fun stop() {
         TODO("Not yet implemented")
     }
 
-    actual suspend fun load(file: String) {
+    actual suspend fun loadFile(file: String) {
         val fileFs = File(file)
         stream = AudioSystem.getAudioInputStream(fileFs)
         format = AudioSystem.getAudioFileFormat(fileFs)
-        println("test")
     }
 
-    actual fun getMixers(): List<Mixer.Info> {
-        return AudioSystem.getMixerInfo().toList()
+    actual suspend fun addFile(file: String){
+
     }
 
-    actual fun getLines(): List<Line.Info>{
-        return mixer.sourceLineInfo.toList()
+    actual suspend fun getMixers(): List<String> {
+        return AudioSystem.getMixerInfo().map { "${it.name}:${it.vendor}" }.toList()
     }
 
-    actual fun setMixer(mixer: Mixer.Info) {
-        this.mixer = AudioSystem.getMixer(mixer)
+    actual suspend fun setMixer(mixer: Int) {
+        this.mixer = AudioSystem.getMixer(AudioSystem.getMixerInfo()[mixer])
         //reset()
     }
 
