@@ -4,6 +4,10 @@ plugins {
     id("com.android.library")
 }
 
+repositories{
+    mavenCentral()
+}
+
 group = "me.selemba"
 version = "1.0-SNAPSHOT"
 
@@ -12,6 +16,7 @@ kotlin {
     jvm("desktop") {
         jvmToolchain(11)
     }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -39,7 +44,10 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
+                implementation("com.tagtraum:ffsampledsp-complete:0.9.50")
+                implementation("net.jthink:jaudiotagger:3.0.1")
             }
+
         }
         val desktopTest by getting
     }
