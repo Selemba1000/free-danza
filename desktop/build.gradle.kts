@@ -32,6 +32,9 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "free-danza"
             packageVersion = "1.0.0"
+            macOS {
+                bundleID = "me.selemba.free-danza"
+            }
         }
     }
 }
