@@ -1,3 +1,5 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
@@ -17,12 +19,14 @@ kotlin {
         jvmToolchain(11)
     }
 
+    @OptIn(ExperimentalComposeLibrary::class)
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
+                api(compose.material3)
+                api(compose.materialIconsExtended)
             }
         }
         val commonTest by getting {
@@ -36,15 +40,12 @@ kotlin {
                 api("androidx.core:core-ktx:1.10.1")
             }
         }
-        val androidUnitTest by getting {
-            dependencies {
-                implementation("junit:junit:4.13.2")
-            }
-        }
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
                 implementation("com.tagtraum:ffsampledsp-complete:0.9.50")
+                //implementation("com.googlecode.soundlibs:tritonus-share:0.3.7.2")
+                //implementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
                 implementation("net.jthink:jaudiotagger:3.0.1")
             }
 
@@ -56,6 +57,8 @@ kotlin {
 android {
     compileSdkVersion(33)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     defaultConfig {
         minSdkVersion(24)
         targetSdkVersion(33)

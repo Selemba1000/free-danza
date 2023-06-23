@@ -17,4 +17,4 @@ pluginManagement {
 
 rootProject.name = "free-danza"
 
-include(":android", ":desktop", ":common")
+include(":androidMain", ":desktop", ":common")
