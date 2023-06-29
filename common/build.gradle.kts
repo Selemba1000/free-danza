@@ -27,7 +27,10 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material3)
                 api(compose.materialIconsExtended)
-            }
+                implementation("org.jetbrains.exposed:exposed-core:0.41.1")
+                implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
+                implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
+                implementation("com.h2database:h2:2.1.214")            }
         }
         val commonTest by getting {
             dependencies {
