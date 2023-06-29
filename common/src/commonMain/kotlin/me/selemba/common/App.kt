@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import me.selemba.common.audio.AudioFile
 import me.selemba.common.audio.Player
 import me.selemba.common.ui.elements.player.PlayerControl
 

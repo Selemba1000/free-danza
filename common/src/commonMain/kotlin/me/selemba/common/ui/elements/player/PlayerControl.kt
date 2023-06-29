@@ -46,13 +46,6 @@ fun PlayerControl(modifier: Modifier = Modifier.height(100.dp).fillMaxWidth()) {
     val position = model.position
     val state = model.state
 
-    LaunchedEffect(null){
-        //delay(1000)
-
-        //model.start()
-    }
-
-
     Box(
         modifier,
     ) {

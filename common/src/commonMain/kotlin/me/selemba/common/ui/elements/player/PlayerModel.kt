@@ -52,11 +52,11 @@ class PlayerModel {
 
     suspend fun seekEnd(){
         player.seek((player.getLengthMilis()*position).toInt())
-        if(wasPlaying){
+        state = if(wasPlaying){
             start()
-            state=PlayerState.PLAYING
+            PlayerState.PLAYING
         }else{
-            state=PlayerState.PAUSED
+            PlayerState.PAUSED
         }
     }
 
