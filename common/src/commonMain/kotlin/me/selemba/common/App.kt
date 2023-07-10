@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import me.selemba.common.audio.Player
+import me.selemba.common.ui.elements.lists.SongList
 import me.selemba.common.ui.elements.player.PlayerControl
 
 @Composable
@@ -25,4 +26,5 @@ fun App() {
     }
     Text(p.getMixers().map { "${it.key}:${it.value}" }.joinToString())
     PlayerControl(Modifier.padding(top = 100.dp))
+    SongList()
 }
