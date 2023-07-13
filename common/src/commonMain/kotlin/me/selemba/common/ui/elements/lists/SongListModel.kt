@@ -24,55 +24,14 @@ class SongListModel {
             load()
         }
 
-    private var _descending = false
-    var descending: Boolean
-        get() = _descending
-        set(b: Boolean) {
-            _descending = b
-            load()
-        }
-
-    private var _column: Column = Column.NAME
-    var column: Column
-        get() = _column
-        set(value) {
-            _column = value
-            load()
-        }
-
     fun load() {
         transaction {
             songs = if (search != null) {
-                if (column == Column.NAME) {
-                    if (descending)
-                        SongFile.find { SongFileTable.name  like "%$search%" }.sortedByDescending { it.name }
-                    else
-                        SongFile.find { SongFileTable.name like "%$search%" }.sortedBy { it.name }
-                } else {
-                    if (descending)
-                        SongFile.find { SongFileTable.name like "%$search%" }.sortedByDescending { it.length }
-                    else
-                        SongFile.find { SongFileTable.name like "%$search%" }.sortedBy { it.length }
-                }
+                SongFile.find { SongFileTable.name like "%$search%" }.toList()
             }else {
-                if (column == Column.NAME) {
-                    if (descending)
-                        SongFile.all().sortedByDescending { it.name }
-                    else
-                        SongFile.all().sortedBy { it.name }
-                } else {
-                    if (descending)
-                        SongFile.all().sortedByDescending { it.length }
-                    else
-                        SongFile.all().sortedBy { it.length }
-                }
+
+                SongFile.all().toList()
             }
         }
     }
-
-    enum class Column {
-        NAME,
-        LENGTH
-    }
-
 }

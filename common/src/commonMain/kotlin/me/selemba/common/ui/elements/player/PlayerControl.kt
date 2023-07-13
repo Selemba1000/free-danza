@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
@@ -36,6 +37,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.selemba.common.audio.AudioFile
+import me.selemba.common.ui.elements.interactive.InteractiveIconButton
 
 @Composable
 fun PlayerControl(modifier: Modifier = Modifier.height(100.dp).fillMaxWidth()) {
@@ -55,75 +57,29 @@ fun PlayerControl(modifier: Modifier = Modifier.height(100.dp).fillMaxWidth()) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row {
-                    val interactPlay = remember { MutableInteractionSource() }
-                    val scalePlay by animateFloatAsState(
-                        targetValue = if(interactPlay.collectIsPressedAsState().value).8f else 1f,
-                        tween(100)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    InteractiveIconButton(
+                        Icons.Rounded.SkipPrevious,
+                        {//TODO skip
+                        },
+                        MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 5.dp)
                     )
-
-                    val interactPrev = remember { MutableInteractionSource() }
-                    val scalePrev by animateFloatAsState(
-                        targetValue = if(interactPrev.collectIsPressedAsState().value).8f else 1f,
-                        tween(100)
+                    InteractiveIconButton(
+                        if(model.state==PlayerModel.PlayerState.PLAYING||model.state==PlayerModel.PlayerState.SEEKING&&model.wasPlaying)Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                        {scope.launch { model.startPause() }},
+                        MaterialTheme.colorScheme.primary,
+                        size = 60.dp,
+                        modifier = Modifier.padding(horizontal = 5.dp)
                     )
-
-                    val interactNext = remember { MutableInteractionSource() }
-                    val scaleNext by animateFloatAsState(
-                        targetValue = if(interactNext.collectIsPressedAsState().value).8f else 1f,
-                        tween(100)
+                    InteractiveIconButton(
+                        Icons.Rounded.SkipNext,
+                        {
+                            //TODO skip
+                        },
+                        MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 5.dp)
                     )
-
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .width(50.dp)
-                            .height(50.dp)
-                            .clickable(interactPrev, null, onClick = { println("play") })
-                            .scale(scalePrev)
-                    ) {
-                        Icon(
-                            Icons.Rounded.SkipPrevious,
-                            "",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.width(40.dp).height(40.dp).scale(1.2f).padding(0.dp)
-                                .align(Alignment.Center)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(0.dp)
-                            .width(50.dp)
-                            .height(50.dp)
-                            .clickable(interactPlay, null, onClick = { scope.launch { model.startPause() } })
-                            .scale(scalePlay)
-                    ) {
-                        Icon(
-                            if(model.state==PlayerModel.PlayerState.PLAYING||model.state==PlayerModel.PlayerState.SEEKING&&model.wasPlaying)Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
-                            "",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.width(40.dp).height(40.dp).scale(1.6f).padding(0.dp)
-                                .align(Alignment.Center)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .width(50.dp)
-                            .height(50.dp)
-                            .clickable(interactNext, null, onClick = { println("play") })
-                            .scale(scaleNext)
-                    ) {
-                        Icon(
-                            Icons.Rounded.SkipNext,
-                            "",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.width(40.dp).height(40.dp).scale(1.2f).padding(0.dp)
-                                .align(Alignment.Center)
-                        )
-                    }
                 }
 
                 PlayerSlider(

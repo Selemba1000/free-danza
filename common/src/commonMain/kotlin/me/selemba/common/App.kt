@@ -14,17 +14,5 @@ import me.selemba.common.ui.elements.player.PlayerControl
 
 @Composable
 fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
-    val platformName = getPlatformName()
-    val p = Player(CoroutineScope(Dispatchers.IO))
 
-    Button(onClick = {
-        text = "Hello, ${platformName}"
-
-    }) {
-        Text(text)
-    }
-    Text(p.getMixers().map { "${it.key}:${it.value}" }.joinToString())
-    PlayerControl(Modifier.padding(top = 100.dp))
-    SongList()
 }
