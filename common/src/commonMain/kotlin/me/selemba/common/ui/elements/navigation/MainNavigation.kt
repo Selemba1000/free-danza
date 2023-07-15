@@ -34,7 +34,7 @@ fun MainNavigation(model: MainNavigationModel){
 class MainNavigationModel(val screens: List<NavigationTarget>){
     private var _lock by mutableStateOf(false)
     var content by mutableStateOf(screens[0])
-    private var navPending : NavigationTarget? by mutableStateOf(null)
+    var navPending : NavigationTarget? by mutableStateOf(null)
 
     fun navigateTo(target: NavigationTarget){
         navPending = target

@@ -23,7 +23,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun SongList() {
+fun SongList(import: ()->Unit,export: ()->Unit) {
     val model = remember { SongListModel() }
     var songs = model.songs
 
@@ -61,7 +61,7 @@ fun SongList() {
             ) {
                 InteractiveIconButton(
                     Icons.Outlined.Archive,
-                    {},
+                    import,
                     MaterialTheme.colorScheme.primary
                 )
             }
