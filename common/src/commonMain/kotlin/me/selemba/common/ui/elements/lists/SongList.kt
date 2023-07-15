@@ -1,6 +1,7 @@
 package me.selemba.common.ui.elements.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -9,7 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.runBlocking
 import me.selemba.common.persistence.Storage
 import me.selemba.common.persistence.schema.SongFile
 import me.selemba.common.ui.elements.interactive.InteractiveIconButton
@@ -25,8 +28,7 @@ fun SongList() {
     var songs = model.songs
 
     LaunchedEffect(null) {
-        Storage.initialize()
-        transaction {
+        Storage.suspendTransaction {
             addLogger(StdOutSqlLogger)
             SongFile.new {
                 name = "test"
@@ -64,15 +66,21 @@ fun SongList() {
                 )
             }
         }
-        SortedList(
-            2,
-            model.songs.map {
-                SortedListRow(
-                    it.id.value,
-                    it.name,
-                    it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" })
-            },
-            SortedListRow(0, "Name", "Länge")
-        )
+        if (model.loading) {
+            Column(Modifier.fillMaxSize().padding(20.dp),horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator(strokeWidth = 5.dp)
+            }
+        } else {
+            SortedList(
+                2,
+                model.songs.map {
+                    SortedListRow(
+                        it.id.value,
+                        it.name,
+                        it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" })
+                },
+                SortedListRow(0, "Name", "Länge")
+            )
+        }
     }
 }

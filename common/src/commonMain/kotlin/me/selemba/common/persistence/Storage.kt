@@ -1,25 +1,47 @@
 package me.selemba.common.persistence
 
+import kotlinx.coroutines.*
+import kotlinx.coroutines.runBlocking
 import me.selemba.common.persistence.schema.*
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object Storage {
 
+    val scope = CoroutineScope(Dispatchers.IO)
+
     val database by lazy {
-        val tmp = Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
-        transaction {
-            addLogger(StdOutSqlLogger)
-            SchemaUtils.create(SongFileTable,SongTable,UnitTable,ExerciseTable,UnitSongTable,ExerciseSongTable)
-        }
-        tmp
+        Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
     }
 
-    fun initialize():Database{
-        return database
+    private var init = false
+
+    fun <T> transaction(statement: Transaction.() -> T) {
+        scope.launch {
+            //delay(1000L)
+            transaction(db = database){
+                initialize()
+                statement()
+            }
+        }
+    }
+
+    suspend fun <T> suspendTransaction(statement: Transaction.() -> T){
+        scope.launch {
+            //delay(1000L)
+            transaction(db = database){
+                initialize()
+                statement()
+            }
+        }.join()
+    }
+
+    fun Transaction.initialize () {
+        if (init) return
+        addLogger(StdOutSqlLogger)
+        SchemaUtils.create(SongFileTable, SongTable, UnitTable, ExerciseTable, UnitSongTable, ExerciseSongTable)
+        init = true
     }
 
 }

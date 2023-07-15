@@ -3,20 +3,19 @@ package me.selemba.common.ui.elements.lists
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import me.selemba.common.persistence.Storage
 import me.selemba.common.persistence.schema.SongFile
 import me.selemba.common.persistence.schema.SongFileTable
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class SongListModel {
 
     val db = Storage.database
 
     var songs by mutableStateOf(emptyList<SongFile>())
+
+    var loading by mutableStateOf(true)
 
     private var _search: String? by mutableStateOf<String?>(null)
     var search: String?
@@ -27,13 +26,16 @@ class SongListModel {
         }
 
     fun load() {
-        transaction {
+        println("load")
+        Storage.transaction {
+            addLogger(StdOutSqlLogger)
             songs = if (search != null) {
                 SongFile.find { SongFileTable.name like "%$search%" }.toList()
             }else {
-
+                println(SongFile.all().toList())
                 SongFile.all().toList()
             }
+            loading=false
         }
     }
 }
