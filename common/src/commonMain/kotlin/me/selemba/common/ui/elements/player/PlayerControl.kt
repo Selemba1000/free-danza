@@ -52,7 +52,9 @@ fun PlayerControl(modifier: Modifier = Modifier.height(100.dp).fillMaxWidth()) {
         modifier,
     ) {
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            tonalElevation = 3.dp,
+            shadowElevation = 5.dp,
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -107,8 +109,8 @@ fun PlayerSlider(
     height: Dp = 5.dp,
     thumbSize: Dp = 20.dp,
     thumbColor: Color = MaterialTheme.colorScheme.primary,
-    trackColor: Color = MaterialTheme.colorScheme.surfaceColorAtElevation(8.dp),
-    trackActiveColor: Color = MaterialTheme.colorScheme.primary
+    trackColor: Color = MaterialTheme.colorScheme.surface,
+    trackActiveColor: Color = MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp)
 ) {
     val interact = remember { MutableInteractionSource() }
 

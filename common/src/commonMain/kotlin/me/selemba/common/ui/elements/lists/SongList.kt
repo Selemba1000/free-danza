@@ -24,42 +24,55 @@ fun SongList() {
     val model = remember { SongListModel() }
     var songs = model.songs
 
-    LaunchedEffect(null){
+    LaunchedEffect(null) {
         Storage.initialize()
         transaction {
             addLogger(StdOutSqlLogger)
-            SongFile.new{
+            SongFile.new {
                 name = "test"
                 length = 103550
             }
-            SongFile.new{
+            SongFile.new {
                 name = "abc"
                 length = 235663
             }
         }
         model.load()
     }
-
-    Surface(tonalElevation = 1.dp,shadowElevation = 1.dp, shape = RoundedCornerShape(15.dp), modifier = Modifier.fillMaxWidth().padding(top = 300.dp)) {
-        Column {
-            var text by remember { mutableStateOf("") }
-            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                Row(modifier = Modifier.weight(.25f), horizontalArrangement = Arrangement.End){
-                }
-                OutlinedTextField(model.search?:"",{value -> if (value.isEmpty())model.search=null else model.search=value}, maxLines = 1, singleLine = true, enabled = true, modifier = Modifier.height(55.dp).weight(.5f), label = { Text("Suche") })
-                Row(modifier = Modifier.weight(.25f).height(50.dp).padding(end = 20.dp).padding(vertical = 5.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End){
-                    InteractiveIconButton(
-                        Icons.Outlined.Archive,
-                        {},
-                        MaterialTheme.colorScheme.primary
-                    )
-                }
+    Column {
+        var text by remember { mutableStateOf("") }
+        Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.weight(.25f), horizontalArrangement = Arrangement.End) {
             }
-            SortedList(
-                2,
-                model.songs.map { SortedListRow(it.id.value,it.name,it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" }) },
-                SortedListRow(0,"Name","Länge")
-            )
+            OutlinedTextField(
+                model.search ?: "",
+                { value -> if (value.isEmpty()) model.search = null else model.search = value },
+                maxLines = 1,
+                singleLine = true,
+                enabled = true,
+                modifier = Modifier.height(60.dp).weight(.5f),
+                label = { Text("Suche") })
+            Row(
+                modifier = Modifier.weight(.25f).height(55.dp).padding(end = 20.dp).padding(vertical = 5.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                InteractiveIconButton(
+                    Icons.Outlined.Archive,
+                    {},
+                    MaterialTheme.colorScheme.primary
+                )
+            }
         }
+        SortedList(
+            2,
+            model.songs.map {
+                SortedListRow(
+                    it.id.value,
+                    it.name,
+                    it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" })
+            },
+            SortedListRow(0, "Name", "Länge")
+        )
     }
 }
