@@ -1,6 +1,6 @@
 package me.selemba.common.persistence
 
-actual object StorageLocation {
+actual object StorageLocationImpl {
 
     private fun getOS():OS{
         val tmp = System.getProperty("os.name").lowercase()

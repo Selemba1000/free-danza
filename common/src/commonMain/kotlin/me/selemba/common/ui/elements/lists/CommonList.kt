@@ -1,10 +1,7 @@
 package me.selemba.common.ui.elements.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.onClick
@@ -21,9 +18,8 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SortedList(
-    columns: Int,
     items: List<SortedListRow> = emptyList(),
-    headers: SortedListRow,
+    headers: List<SortedListHeader>,
     modifier: Modifier = Modifier.padding(10.dp)
 ) {
     var sortColumn by remember { mutableStateOf(0) }
@@ -34,14 +30,22 @@ fun SortedList(
             Surface(tonalElevation = 20.dp, color = MaterialTheme.colorScheme.primaryContainer) {
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(5.dp)) {
                     val man = LocalFocusManager.current
-                    for (i in 0 until columns) {
-                        Row(modifier = Modifier.weight(1f / columns).onClick { man.clearFocus(); if(sortColumn!=i)sortColumn=i else descending=!descending }, verticalAlignment = Alignment.CenterVertically) {
-                            Text(headers.items[i])
-                            if (sortColumn == i) {
-                                Icon(
-                                    if (descending) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore,
-                                    ""
-                                )
+                    for (i in headers.indices) {
+                        if(headers[i].sortable) {
+                            Row(modifier = Modifier.weight(headers[i].weight ?: (1f / headers.size)).onClick {
+                                man.clearFocus(); if (sortColumn != i) sortColumn = i else descending = !descending
+                            }, verticalAlignment = Alignment.CenterVertically) {
+                                headers[i].head()
+                                if (sortColumn == i) {
+                                    Icon(
+                                        if (descending) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore,
+                                        ""
+                                    )
+                                }
+                            }
+                        }else{
+                            Row(Modifier.weight(headers[i].weight ?: (1f / headers.size)),verticalAlignment = Alignment.CenterVertically) {
+                                headers[i].head()
                             }
                         }
                     }
@@ -49,10 +53,14 @@ fun SortedList(
             }
             Divider(thickness = 2.dp)
         }
-        items(if(descending)items.sortedByDescending { it.items[sortColumn] } else items.sortedBy { it.items[sortColumn] },{it.key}) { item ->
+        items(if(descending)items.sortedByDescending { it.items[sortColumn].sortKey as Comparable<Any> } else items.sortedBy { it.items[sortColumn].sortKey as Comparable<Any> },{it.key}) { item ->
             Row(Modifier.padding(5.dp)) {
-                for (i in 0 until columns) {
-                    Text(item.items[i], modifier = Modifier.weight(1f / columns))
+                for (i in headers.indices
+                ) {
+                    Box(modifier = Modifier.weight(headers[i].weight ?: (1f / headers.size))){
+                        item.items[i].content()
+                    }
+                    //Text(item.items[i], modifier = Modifier.weight(1f / columns))
                 }
             }
         }
@@ -66,4 +74,6 @@ fun SortedList(
     }
 }
 
-class SortedListRow(var key: Int, vararg val items: String)
+class SortedListHeader(val head: @Composable ()->Unit,val sortable: Boolean,val weight: Float? = null)
+class SortedListRow(var key: Int, vararg val items: SortedListCell)
+data class SortedListCell(var sortKey: Any,val content: @Composable ()->Unit)

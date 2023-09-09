@@ -72,14 +72,13 @@ fun SongList(import: ()->Unit,export: ()->Unit) {
             }
         } else {
             SortedList(
-                2,
                 model.songs.map {
                     SortedListRow(
                         it.id.value,
-                        it.name,
-                        it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" })
+                        SortedListCell(it.name){Text(it.name)},
+                        SortedListCell(it.length){Text(it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" })})
                 },
-                SortedListRow(0, "Name", "Länge")
+                listOf(SortedListHeader({Text("Name")}, true),SortedListHeader({Text("Länge")}, true,.2f))
             )
         }
     }
