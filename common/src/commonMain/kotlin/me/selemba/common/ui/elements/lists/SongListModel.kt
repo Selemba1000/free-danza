@@ -26,13 +26,11 @@ class SongListModel {
         }
 
     fun load() {
-        println("load")
         Storage.transaction {
             addLogger(StdOutSqlLogger)
             songs = if (search != null) {
                 SongFile.find { SongFileTable.name like "%$search%" }.toList()
             }else {
-                println(SongFile.all().toList())
                 SongFile.all().toList()
             }
             loading=false

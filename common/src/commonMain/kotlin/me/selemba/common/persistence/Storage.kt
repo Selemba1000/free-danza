@@ -12,7 +12,7 @@ object Storage {
     val scope = CoroutineScope(Dispatchers.IO)
 
     val database by lazy {
-        Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
+        Database.connect("jdbc:h2:${StorageLocation.userDataLocation.absolutePath}/data/data", driver = "org.h2.Driver")
     }
 
     private var init = false

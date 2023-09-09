@@ -13,6 +13,7 @@ object StorageLocation {
             if(!tmp.isDirectory)throw DirectoryIsFileException(tmp.path)
             if (!tmp.canRead())throw FileReadException(tmp.path)
             if(!tmp.canWrite())throw FileWriteException(tmp.path)
-            return tmp
+            val dir = File(tmp,"free-danza")
+            return dir
         }
 }

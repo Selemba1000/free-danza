@@ -28,17 +28,6 @@ fun SongList(import: ()->Unit,export: ()->Unit) {
     var songs = model.songs
 
     LaunchedEffect(null) {
-        Storage.suspendTransaction {
-            addLogger(StdOutSqlLogger)
-            SongFile.new {
-                name = "test"
-                length = 103550
-            }
-            SongFile.new {
-                name = "abc"
-                length = 235663
-            }
-        }
         model.load()
     }
     Column {

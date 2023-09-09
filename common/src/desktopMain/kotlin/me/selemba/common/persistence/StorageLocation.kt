@@ -11,9 +11,10 @@ actual object StorageLocationImpl {
     }
 
     actual val userDataLocation: String = when(getOS()){
-        OS.WINDOWS -> ""
+        OS.WINDOWS -> System.getenv("LOCALAPPDATA");
         OS.LINUX -> ""
         OS.MAC -> ""
+        //TODO
         else -> ""
     }
     enum class OS(val matcher: (String)->Boolean) {
