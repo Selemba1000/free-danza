@@ -29,7 +29,7 @@ class SongListModel {
         Storage.transaction {
             addLogger(StdOutSqlLogger)
             songs = if (search != null) {
-                SongFile.find { SongFileTable.name like "%$search%" }.toList()
+                SongFile.find { SongFileTable.title like "%$search%" }.toList()
             }else {
                 SongFile.all().toList()
             }

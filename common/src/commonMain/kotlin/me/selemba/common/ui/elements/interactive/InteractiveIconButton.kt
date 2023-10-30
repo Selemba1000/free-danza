@@ -28,12 +28,12 @@ fun InteractiveIconButton(
     val scale by animateFloatAsState(
         targetValue = if (interact.collectIsPressedAsState().value) .8f else 1f, tween(100)
     )
-    Box(modifier = modifier.width(size).height(size).clickable(interact, indication = null, onClick = onClick)) {
+    Box(modifier = modifier.clickable(interact, indication = null, onClick = onClick)) {
         Icon(
             icon,
             "",
             tint = tint,
-            modifier = Modifier.scale(scale).align(Alignment.Center).width(size).height(size)
+            modifier = Modifier.scale(scale).align(Alignment.Center).size(size)
         )
     }
 }

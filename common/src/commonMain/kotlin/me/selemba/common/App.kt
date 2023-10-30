@@ -22,7 +22,6 @@ import me.selemba.common.ui.elements.navigation.NavigationTarget
 import me.selemba.common.ui.elements.player.PlayerControl
 import me.selemba.common.ui.screens.MusicScreen
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun App() {
     val model = remember {
@@ -31,11 +30,7 @@ fun App() {
                 NavigationTarget("Start", Icons.Outlined.Home) @Composable { Text("lala") },
                 NavigationTarget("Musik", Icons.Outlined.MusicNote) { m -> MusicScreen(m) },
                 NavigationTarget("Übungen", Icons.Outlined.Task) @Composable {
-                    Window(onCloseRequest = { }) {
-                        Box(
-                            Modifier.size(10.dp).background(Color.Red)
-                        )
-                    }
+
                 },
                 NavigationTarget(
                     "Einheiten",
@@ -59,9 +54,9 @@ fun App() {
                     model.content,
                     transitionSpec = {
                         if(model.screens.indexOf(initialState)<model.screens.indexOf(targetState)){
-                            slideInHorizontally { width -> width } + fadeIn() with slideOutHorizontally { width -> -width } + fadeOut()
+                            (slideInHorizontally { width -> width } + fadeIn()).togetherWith(slideOutHorizontally { width -> -width } + fadeOut())
                         }else{
-                            slideInHorizontally { width -> -width } + fadeIn() with slideOutHorizontally { width -> width } + fadeOut()
+                            (slideInHorizontally { width -> -width } + fadeIn()).togetherWith(slideOutHorizontally { width -> width } + fadeOut())
                         }
                     }
                 ) { targetState ->

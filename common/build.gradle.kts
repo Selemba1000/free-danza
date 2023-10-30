@@ -8,13 +8,14 @@ plugins {
 
 repositories{
     mavenCentral()
+    mavenLocal()
 }
 
 group = "me.selemba"
 version = "1.0-SNAPSHOT"
 
 kotlin {
-    android()
+    androidTarget()
     jvm("desktop") {
         jvmToolchain(11)
     }
@@ -30,7 +31,9 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-core:0.41.1")
                 implementation("org.jetbrains.exposed:exposed-dao:0.41.1")
                 implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
-                implementation("com.h2database:h2:2.1.214")            }
+                implementation("com.h2database:h2:2.1.214")
+                implementation("net.jthink:jaudiotagger:3.0.1")
+            }
         }
         val commonTest by getting {
             dependencies {
@@ -49,7 +52,7 @@ kotlin {
                 implementation("com.tagtraum:ffsampledsp-complete:0.9.50")
                 //implementation("com.googlecode.soundlibs:tritonus-share:0.3.7.2")
                 //implementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
-                implementation("net.jthink:jaudiotagger:3.0.1")
+                implementation("me.selemba:KotlinTinyFileDialogs:1.0.0")
             }
 
         }

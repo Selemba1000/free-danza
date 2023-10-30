@@ -6,14 +6,25 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
 
 object SongFileTable : IntIdTable() {
-    val name = varchar("name",50)
-    val length = integer("length")
+    val title = varchar("title",50)
+    val artist = varchar("artist", 50)
+    val album = varchar("album", 100)
+    val bpm = integer("bpm")
+    val date = varchar("date", 10)
+    val genre = varchar("genre", 50)
+
+    val length = long("length")
     val extension = varchar("extension",4)
 }
 
 class SongFile(id: EntityID<Int>) : IntEntity(id){
     companion object : IntEntityClass<SongFile>(SongFileTable)
-    var name by SongFileTable.name
+    var title by SongFileTable.title
+    var artist by SongFileTable.artist
+    var album by SongFileTable.album
+    var bpm by SongFileTable.bpm
+    var date by SongFileTable.date
+    var genre by SongFileTable.genre
     var length by SongFileTable.length
     var extension by SongFileTable.extension
     fun filename(id: Int)="$id.$extension"

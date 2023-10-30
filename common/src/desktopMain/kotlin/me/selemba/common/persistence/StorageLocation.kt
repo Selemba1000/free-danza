@@ -11,9 +11,9 @@ actual object StorageLocationImpl {
     }
 
     actual val userDataLocation: String = when(getOS()){
-        OS.WINDOWS -> System.getenv("LOCALAPPDATA");
+        OS.WINDOWS -> System.getenv("APPDATA");
         OS.LINUX -> ""
-        OS.MAC -> ""
+        OS.MAC -> System.getProperty("user.home")+"/Library/Application Support"
         //TODO
         else -> ""
     }

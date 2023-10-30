@@ -1,6 +1,7 @@
 package me.selemba.common.ui.elements.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 
@@ -20,7 +22,7 @@ import androidx.compose.ui.unit.dp
 fun SortedList(
     items: List<SortedListRow> = emptyList(),
     headers: List<SortedListHeader>,
-    modifier: Modifier = Modifier.padding(10.dp)
+    modifier: Modifier = Modifier.padding(horizontal = 10.dp)
 ) {
     var sortColumn by remember { mutableStateOf(0) }
     var descending by remember { mutableStateOf(false) }

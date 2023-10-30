@@ -2,6 +2,7 @@ package me.selemba.common.ui.elements.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,7 +31,7 @@ fun SongList(import: ()->Unit,export: ()->Unit) {
     LaunchedEffect(null) {
         model.load()
     }
-    Column {
+    Column() {
         var text by remember { mutableStateOf("") }
         Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
             Row(modifier = Modifier.weight(.25f), horizontalArrangement = Arrangement.End) {
@@ -41,7 +42,7 @@ fun SongList(import: ()->Unit,export: ()->Unit) {
                 maxLines = 1,
                 singleLine = true,
                 enabled = true,
-                modifier = Modifier.height(60.dp).weight(.5f),
+                modifier = Modifier.height(80.dp).weight(.5f).padding(bottom = 10.dp),
                 label = { Text("Suche") })
             Row(
                 modifier = Modifier.weight(.25f).height(55.dp).padding(end = 20.dp).padding(vertical = 5.dp),
@@ -64,7 +65,7 @@ fun SongList(import: ()->Unit,export: ()->Unit) {
                 model.songs.map {
                     SortedListRow(
                         it.id.value,
-                        SortedListCell(it.name){Text(it.name)},
+                        SortedListCell(it.title){Text(it.title)},
                         SortedListCell(it.length){Text(it.length.milliseconds.toComponents { hours, minutes, seconds, nanoseconds -> if (hours > 0) "$hours:$minutes:$seconds" else "$minutes:$seconds" })})
                 },
                 listOf(SortedListHeader({Text("Name")}, true),SortedListHeader({Text("Länge")}, true,.2f))
