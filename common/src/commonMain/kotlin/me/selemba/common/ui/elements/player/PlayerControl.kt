@@ -103,7 +103,7 @@ fun PlayerSlider(
     thumbSize: Dp = 20.dp,
     thumbColor: Color = MaterialTheme.colorScheme.primary,
     trackColor: Color = MaterialTheme.colorScheme.surface,
-    trackActiveColor: Color = MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp)
+    trackActiveColor: Color = MaterialTheme.colorScheme.primary
 ) {
     val interact = remember { MutableInteractionSource() }
 
