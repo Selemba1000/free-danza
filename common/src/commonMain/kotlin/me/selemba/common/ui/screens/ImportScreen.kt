@@ -13,9 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogWindow
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import me.selemba.common.persistence.Storage
 import me.selemba.common.ui.elements.interactive.FilePicker
 import me.selemba.common.ui.elements.interactive.InteractiveIconButton
 
@@ -94,14 +94,25 @@ fun Importing(model: ImportModel, canContinue: () -> Unit) {
         DialogWindow({}, title = "Importieren?", transparent = true, undecorated = true, content = @Composable {
             Surface(Modifier.fillMaxSize(), shape = RoundedCornerShape(15.dp)) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Surface(tonalElevation = 3.dp,modifier = Modifier.border(1.dp, Color.Transparent, RoundedCornerShape(topStart=15.dp,topEnd=15.dp))) {
+                    Surface(
+                        tonalElevation = 3.dp,
+                        modifier = Modifier.border(
+                            1.dp,
+                            Color.Transparent,
+                            RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)
+                        )
+                    ) {
                         WindowDraggableArea(Modifier.height(40.dp).fillMaxWidth()) {
-                            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxSize()) {
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
                                 Text("Importieren?")
                             }
                         }
                     }
-                    Box (Modifier.weight(1f),){
+                    Box(Modifier.weight(1f)) {
                         Text(
                             "Tatsächlich ${model.taggedFiles.size} Musiken importieren",
                             textAlign = TextAlign.Center,
@@ -112,7 +123,7 @@ fun Importing(model: ImportModel, canContinue: () -> Unit) {
                         ElevatedButton({ model.previousStage() }) {
                             Text("Abbrechen")
                         }
-                        OutlinedButton({model.import()}){
+                        OutlinedButton({ model.import() }) {
                             Text("Ok")
                         }
                     }
@@ -162,7 +173,6 @@ fun FileSelect(importModel: ImportModel, canContinue: () -> Unit) {
             },
             singleLine = true
         )
-
     }
 }
 

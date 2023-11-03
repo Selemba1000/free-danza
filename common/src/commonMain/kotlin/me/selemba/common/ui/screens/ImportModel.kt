@@ -36,8 +36,10 @@ class ImportModel(val stages: List<@Composable (ImportModel) -> Unit>,val finish
     var taggingReady by mutableStateOf(false)
 
     fun tag(){
-        taggedFiles=files.map { MusicTagger.readTags(it) }
-        taggingReady=true
+        Storage.scope.launch {
+            taggedFiles = files.map { MusicTagger.readTags(it) }
+            taggingReady = true
+        }
     }
 
     fun import(){

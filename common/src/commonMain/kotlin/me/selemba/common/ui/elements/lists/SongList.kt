@@ -49,17 +49,18 @@ fun SongList(import: () -> Unit, export: () -> Unit, edit: (SongFile) -> Unit, m
                 maxLines = 1,
                 singleLine = true,
                 enabled = true,
-                modifier = Modifier.height(80.dp).weight(.5f).padding(bottom = 10.dp),
+                modifier = Modifier.height(75.dp).weight(.5f).padding(bottom = 10.dp),
                 label = { Text("Suche") })
             Row(
-                modifier = Modifier.weight(.25f).height(55.dp).padding(end = 20.dp).padding(vertical = 5.dp),
+                modifier = Modifier.weight(.25f).height(50.dp).padding(end = 20.dp).padding(vertical = 5.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
                 InteractiveIconButton(
-                    Icons.Outlined.Archive,
+                    Icons.Outlined.FilePresent,
                     import,
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.primary,
+
                 )
             }
         }
