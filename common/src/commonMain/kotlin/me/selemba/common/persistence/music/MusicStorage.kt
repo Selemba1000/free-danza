@@ -42,6 +42,12 @@ object MusicStorage {
 
     }
 
+    fun delete(song: SongFile){
+        val filename = song.filename(song.id.value)
+        val file = File(StorageLocation.userDataLocation,"music/$filename")
+        file.delete()
+    }
+
     fun get(song: SongFile): AudioFile {
         val filename = song.filename(song.id.value)
         val file = File(StorageLocation.userDataLocation,"music/$filename")

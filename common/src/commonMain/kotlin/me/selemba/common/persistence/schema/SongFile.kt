@@ -10,7 +10,7 @@ object SongFileTable : IntIdTable() {
     val artist = varchar("artist", 50)
     val album = varchar("album", 100)
     val bpm = integer("bpm")
-    val date = varchar("date", 10)
+    val year = varchar("year", 10)
     val genre = varchar("genre", 50)
 
     val length = long("length")
@@ -23,7 +23,7 @@ class SongFile(id: EntityID<Int>) : IntEntity(id){
     var artist by SongFileTable.artist
     var album by SongFileTable.album
     var bpm by SongFileTable.bpm
-    var date by SongFileTable.date
+    var year by SongFileTable.year
     var genre by SongFileTable.genre
     var length by SongFileTable.length
     var extension by SongFileTable.extension

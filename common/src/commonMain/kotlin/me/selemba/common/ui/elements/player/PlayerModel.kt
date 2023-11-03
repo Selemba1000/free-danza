@@ -81,6 +81,8 @@ class PlayerModel {
     }
 
     suspend fun loadFile(audioFile: AudioFile){
+        println(audioFile.file.name)
+        player.stop()
         player.loadFile(audioFile)
         state=PlayerState.PAUSED
     }

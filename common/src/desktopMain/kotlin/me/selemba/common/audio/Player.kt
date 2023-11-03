@@ -223,6 +223,7 @@ actual class Player actual constructor(actual val coroutineScope: CoroutineScope
     actual suspend fun loadFile(file: AudioFile) {
         clearFiles()
         addFile(file)
+        setSource()
     }
 
     actual suspend fun addFile(file: AudioFile){

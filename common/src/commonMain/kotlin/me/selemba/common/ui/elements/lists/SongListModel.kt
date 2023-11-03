@@ -8,6 +8,8 @@ import me.selemba.common.persistence.schema.SongFile
 import me.selemba.common.persistence.schema.SongFileTable
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.or
+import org.jetbrains.exposed.sql.orIfNotNull
 
 class SongListModel {
 
@@ -29,7 +31,7 @@ class SongListModel {
         Storage.transaction {
             addLogger(StdOutSqlLogger)
             songs = if (search != null) {
-                SongFile.find { SongFileTable.title like "%$search%" }.toList()
+                SongFile.find { SongFileTable.title like "%$search%" or (SongFileTable.genre like "%$search%") or (SongFileTable.artist like "%$search%") }.toList()
             }else {
                 SongFile.all().toList()
             }

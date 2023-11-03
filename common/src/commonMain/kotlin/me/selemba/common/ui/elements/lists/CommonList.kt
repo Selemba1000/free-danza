@@ -2,6 +2,7 @@ package me.selemba.common.ui.elements.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,7 +23,7 @@ import androidx.compose.ui.unit.dp
 fun SortedList(
     items: List<SortedListRow> = emptyList(),
     headers: List<SortedListHeader>,
-    modifier: Modifier = Modifier.padding(horizontal = 10.dp)
+    modifier: Modifier = Modifier
 ) {
     var sortColumn by remember { mutableStateOf(0) }
     var descending by remember { mutableStateOf(false) }
@@ -56,7 +57,7 @@ fun SortedList(
             Divider(thickness = 2.dp)
         }
         items(if(descending)items.sortedByDescending { it.items[sortColumn].sortKey as Comparable<Any> } else items.sortedBy { it.items[sortColumn].sortKey as Comparable<Any> },{it.key}) { item ->
-            Row(Modifier.padding(5.dp)) {
+            Row(Modifier.padding(5.dp).clickable { item.onClick() }) {
                 for (i in headers.indices
                 ) {
                     Box(modifier = Modifier.weight(headers[i].weight ?: (1f / headers.size))){
@@ -77,5 +78,5 @@ fun SortedList(
 }
 
 class SortedListHeader(val head: @Composable ()->Unit,val sortable: Boolean,val weight: Float? = null)
-class SortedListRow(var key: Int, vararg val items: SortedListCell)
+class SortedListRow(var key: Int, val onClick: ()->Unit, vararg val items: SortedListCell)
 data class SortedListCell(var sortKey: Any,val content: @Composable ()->Unit)

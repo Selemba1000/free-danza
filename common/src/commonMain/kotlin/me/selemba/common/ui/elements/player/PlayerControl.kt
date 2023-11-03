@@ -2,10 +2,7 @@ package me.selemba.common.ui.elements.player
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -13,7 +10,6 @@ import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -21,30 +17,27 @@ import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.SkipNext
 import androidx.compose.material.icons.rounded.SkipPrevious
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.surfaceColorAtElevation
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.selemba.common.audio.AudioFile
 import me.selemba.common.ui.elements.interactive.InteractiveIconButton
 
 @Composable
-fun PlayerControl(modifier: Modifier = Modifier.height(100.dp).fillMaxWidth()) {
+fun PlayerControl(modifier: Modifier = Modifier.height(100.dp).fillMaxWidth(),model: PlayerModel) {
 
     val scope = rememberCoroutineScope()
 
-    val model = remember { PlayerModel() }
     val position = model.position
     val state = model.state
 
@@ -169,10 +162,4 @@ fun Modifier.alignXRelative(x: Float) = layout { measurable, constraints ->
     layout(placeable.width, placeable.height) {
         placeable.placeRelative(((maxWidth * x).toInt()) - (placeable.width / 2), 0)
     }
-}
-
-@Composable
-@Preview
-private fun prev() {
-    PlayerControl()
 }

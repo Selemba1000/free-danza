@@ -20,15 +20,19 @@ import me.selemba.common.ui.elements.navigation.MainNavigation
 import me.selemba.common.ui.elements.navigation.MainNavigationModel
 import me.selemba.common.ui.elements.navigation.NavigationTarget
 import me.selemba.common.ui.elements.player.PlayerControl
+import me.selemba.common.ui.elements.player.PlayerModel
 import me.selemba.common.ui.screens.MusicScreen
 
 @Composable
 fun App() {
+
+    val playerModel = remember { PlayerModel() }
+
     val model = remember {
         MainNavigationModel(
             listOf(
                 NavigationTarget("Start", Icons.Outlined.Home) @Composable { Text("lala") },
-                NavigationTarget("Musik", Icons.Outlined.MusicNote) { m -> MusicScreen(m) },
+                NavigationTarget("Musik", Icons.Outlined.MusicNote) { m -> MusicScreen(m,playerModel) },
                 NavigationTarget("Übungen", Icons.Outlined.Task) @Composable {
 
                 },
@@ -39,6 +43,7 @@ fun App() {
             )
         )
     }
+
     var scheme: Boolean? by remember { mutableStateOf(null) }
     MaterialTheme(
         colorScheme =
@@ -64,8 +69,8 @@ fun App() {
                 }
 
             }
-            Column(Modifier.fillMaxWidth().background(Color.Red).animateContentSize()) {
-                PlayerControl()
+            Column(Modifier.fillMaxWidth().animateContentSize()) {
+                PlayerControl(model = playerModel)
                 /*if (content == pages[2]) {
                     Box(Modifier.fillMaxWidth().background(Color.Red).size(50.dp)) {}
                 }*/
