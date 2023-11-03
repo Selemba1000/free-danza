@@ -178,16 +178,13 @@ fun FileSelect(importModel: ImportModel, canContinue: () -> Unit) {
 
 @Composable
 fun FileTagging(importModel: ImportModel, canContinue: () -> Unit) {
-    LaunchedEffect(null) {
-        delay(500)
-        canContinue()
-    }
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         if (importModel.taggingReady) {
+            canContinue()
             for (file in importModel.taggedFiles) {
                 Surface(
                     tonalElevation = 3.dp,
